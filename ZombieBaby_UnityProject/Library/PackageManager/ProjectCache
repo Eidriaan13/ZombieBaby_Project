@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637846687357259540
-    m_Hash: 613477229
+      ticks: 637846696040370214
+    m_Hash: 3754527485
   m_LockFileStatus:
     m_FilePath: C:/Users/adria/Desktop/ZombieBaby_Project/ZombieBaby_UnityProject/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637846687357439060
-    m_Hash: 4113004385
+      ticks: 637846696040380190
+    m_Hash: 1546068621
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_PackageAssets:
