@@ -16,6 +16,9 @@ public class Player_Movement : MonoBehaviour
     public Joystick joystick2;   //Right joystick
 
     public Transform pitchTransform;
+    private Vector3 newForward;
+    
+    
 
     void Awake()
     {
@@ -83,7 +86,7 @@ public class Player_Movement : MonoBehaviour
 
             // Rotate the forward vector towards the target direction by one step
             Vector3 newDirection = Vector3.RotateTowards(playerDirection, pitchTransform.position, singleStep, 0.0f);
-            Vector3 newForward = new Vector3(newDirection.x, 0, newDirection.z);
+            newForward = new Vector3(newDirection.x, 0, newDirection.z);
 
             // Calculate a rotation a step closer to the target and applies rotation to this object
             pitchTransform.rotation = Quaternion.LookRotation(newForward);
@@ -101,13 +104,19 @@ public class Player_Movement : MonoBehaviour
 
                 // Rotate the forward vector towards the target direction by one step
                 Vector3 newDirection = Vector3.RotateTowards(playerDirection, pitchTransform.position, singleStep, 0.0f);
-                Vector3 newForward = new Vector3(newDirection.x, 0, newDirection.z);
+                newForward = new Vector3(newDirection.x, 0, newDirection.z);
 
                 // Calculate a rotation a step closer to the target and applies rotation to this object
                 pitchTransform.rotation = Quaternion.LookRotation(newForward);
             }
             
         }    
+    }
+
+
+    public Vector3 GetForward()
+    {
+        return pitchTransform.forward;
     }
 
 }
