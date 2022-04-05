@@ -20,7 +20,21 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         get { return deadZone; }
         set { deadZone = Mathf.Abs(value); }
     }
-
+    
+    public bool IsJoystickPressed
+    {
+        get 
+        {
+            if (Horizontal == 0 && Vertical == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
     public AxisOptions AxisOptions { get { return AxisOptions; } set { axisOptions = value; } }
     public bool SnapX { get { return snapX; } set { snapX = value; } }
     public bool SnapY { get { return snapY; } set { snapY = value; } }
