@@ -6,12 +6,12 @@ public class Player_Movement : MonoBehaviour
 {
     public float speed = 6f;            // The speed that the player will move at.
     public float rotationSpeed = 6f;            // The speed that the player will move at.
+    private float m_VerticalSpeed = 0f;
 
     Vector3 movement;   //The vector to store the position of the next step of the player
     Vector3 playerDirection;                   // The vector to store the direction of the player's pitch.
     
-    Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
-
+    CharacterController characterController;
     public Joystick joystick1;  //Left joystick
     public Joystick joystick2;   //Right joystick
 
@@ -19,8 +19,7 @@ public class Player_Movement : MonoBehaviour
 
     void Awake()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
-
+        characterController = GetComponent<CharacterController>();
     }
 
     // Start is called before the first frame update
@@ -29,8 +28,7 @@ public class Player_Movement : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // Store the input axes.
         float h = joystick1.Horizontal;
@@ -39,10 +37,14 @@ public class Player_Movement : MonoBehaviour
         float h2 = joystick2.Horizontal;
         float v2 = joystick2.Vertical;
 
-        // Turn the player to face the mouse cursor.
         // Move the player around the scene.
         Move(h, v, h2, v2);
-        //Turning(h2,v2);
+    }
+    
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 
     void Move(float h, float v,float h2, float v2)
@@ -54,8 +56,23 @@ public class Player_Movement : MonoBehaviour
         movement = movement.normalized * speed * Time.deltaTime;
 
         // Move the player to it's current position plus the movement.
-        transform.position += movement * Time.deltaTime * speed;
-        
+        //transform.position += movement * Time.deltaTime * speed;
+
+        //Gravity 
+        m_VerticalSpeed += Physics.gravity.y * Time.deltaTime;
+        movement.y = m_VerticalSpeed * Time.deltaTime;
+        CollisionFlags l_CollisionFlags = characterController.Move(movement);
+        if ((l_CollisionFlags & CollisionFlags.Below) != 0)
+        {
+            m_VerticalSpeed = 0.0f;
+        }
+        if ((l_CollisionFlags & CollisionFlags.Above) != 0 && m_VerticalSpeed > 0.0f)
+        {
+            m_VerticalSpeed = 0.0f;
+        }
+
+        //characterController.Move(movement * Time.deltaTime * speed);
+
         if (joystick2.IsJoystickPressed)
         {
             // Determine which direction to rotate towards
@@ -87,38 +104,10 @@ public class Player_Movement : MonoBehaviour
                 Vector3 newForward = new Vector3(newDirection.x, 0, newDirection.z);
 
                 // Calculate a rotation a step closer to the target and applies rotation to this object
-                pitchTransform.rotation = Quaternion.LookRotation(newDirection);
+                pitchTransform.rotation = Quaternion.LookRotation(newForward);
             }
             
         }    
     }
 
-    void Turning(float h,float v)
-    {
-
-        // Create a ray from the mouse cursor on screen in the direction of the camera.
-        //Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        // Create a RaycastHit variable to store information about what was hit by the ray.
-        //RaycastHit floorHit;
-
-        // Perform the raycast and if it hits something on the floor layer...
-        //if (Physics.Raycast(camRay, out floorHit, camRayLength, floorMask))
-        //{
-        // Create a vector from the player to the point on the floor the raycast from the mouse hit.
-
-        // Determine which direction to rotate towards
-        //gunDirection.Set(h, 0f, v);
-
-        // The step size is equal to speed times frame time.
-        //float singleStep = rotationSpeed * Time.deltaTime;
-
-        // Rotate the forward vector towards the target direction by one step
-        //Vector3 newDirection = Vector3.RotateTowards(gunTransform.forward, gunDirection, singleStep, 0.0f);
-
-        // Calculate a rotation a step closer to the target and applies rotation to this object
-        //gunTransform.rotation = Quaternion.LookRotation(gunDirection);
-
-        
-    }
 }
