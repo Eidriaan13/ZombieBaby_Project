@@ -10,14 +10,12 @@ public class Player_Movement : MonoBehaviour
     Vector3 movement;   //The vector to store the position of the next step of the player
     Vector3 playerDirection;                   // The vector to store the direction of the player's pitch.
     
-     Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
+    Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 
     public Joystick joystick1;  //Left joystick
     public Joystick joystick2;   //Right joystick
 
     public Transform pitchTransform;
-    public GameObject gunShadow;
-
 
     void Awake()
     {
@@ -60,8 +58,6 @@ public class Player_Movement : MonoBehaviour
         
         if (joystick2.IsJoystickPressed)
         {
-            gunShadow.SetActive(true);
-
             // Determine which direction to rotate towards
             playerDirection.Set(h2, 0f, v2);
 
@@ -73,11 +69,10 @@ public class Player_Movement : MonoBehaviour
             Vector3 newForward = new Vector3(newDirection.x, 0, newDirection.z);
 
             // Calculate a rotation a step closer to the target and applies rotation to this object
-            pitchTransform.rotation = Quaternion.LookRotation(newDirection);
+            pitchTransform.rotation = Quaternion.LookRotation(newForward);
         }
         else
         {
-            gunShadow.SetActive(false);
 
             if (joystick1.IsJoystickPressed)
             {
